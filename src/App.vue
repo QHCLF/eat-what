@@ -1,10 +1,19 @@
 <template>
   <div id="app">
     <Headerer></Headerer>
-    <div id="nav">
-      <router-link to="/goods">商品</router-link>
-      <router-link to="/ratings">评论</router-link>
-      <router-link to="/seller'">商家</router-link>
+    <div class="tab">
+      <div class="tab-item">
+        <router-link to="/goods">商品</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/ratings">评论</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/seller'">商家</router-link>
+      </div>
+
+
+
     </div>
     <router-view/>
   </div>
@@ -23,15 +32,27 @@
 
 <style lang="stylus">
   @import "./assets/stylus/base.styl";
-  @import "./assets/stylus/icon.styl";
+  @import "./assets/stylus/mixin.styl";
   *{
     margin: 0;
     padding: 0;
   }
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+  #app
+    .tab
+      display flex
+      width 100%
+      height 40px
+      line-height 40px
+      .tab-item
+        flex 1
+        border-1px(rgba(7, 17, 27, 0.1))
+        a
+          display block
+          text-decoration none
+          text-align center
+          font-size 14px
+          color rgb(77, 85, 93)
+          &.router-link-exact-active
+            color rgb(240, 20, 20)
+
 </style>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import goods from './views/goods.vue'
+import goods from './views/Goods/goods.vue'
 
 
 Vue.use(Router)

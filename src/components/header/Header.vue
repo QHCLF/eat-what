@@ -12,39 +12,63 @@
                 <div class="description">
                     {{seller.description}}/{{seller.deliveryTime}}分钟送达
                 </div>
-                <div class="support" v-if="seller.supports" @click="showDetail">
+                <div class="support" v-if="seller.supports" >
                     <span class="icon" v-bind:class="classMap[seller.supports[0].type]"></span>
                     <span class="text">
                         {{seller.supports[0].description}}
                     </span>
                 </div>
             </div>
-            <div class="support-count" v-if="seller.supports">
+            <div class="support-count" @click="showDetail" v-if="seller.supports">
                <span class="count">
                     {{seller.supports.length}}个
                </span>
                 <i class="iconfont icon-right"></i>
             </div>
         </div>
-        <div class="bulletin-wrapper" >
+        <div class="bulletin-wrapper">
             <span class="bulletin-title"></span>
             <span class="bulletin-text">
                 {{seller.bulletin}}
             </span>
-            <i class="iconfont icon-right"></i>
+            <i class="iconfont icon-right" @click="showDetail"></i>
         </div>
         <div class="background">
             <img :src="seller.avatar" width="100%" height="100%">
         </div>
-        <div class="detail" v-show="detailShow" >
+        <div class="detail" v-show="detailShow">
             <div class="detail-wrapper clearfix">
                 <div class="detail-main">
                     <h1 class="name">{{seller.name}}</h1>
-                    <star :size="24" :score="seller.score"></star>
+                    <div class="star-wrapper">
+                        <star :size="48" :score="seller.score"></star>
+                    </div>
+                    <div class="title">
+                        <div class="line"></div>
+                        <div class="text">优惠信息</div>
+                        <div class="line"></div>
+                    </div>
+                    <ul v-if="seller.supports" class="supports">
+                        <li class="support-item"
+                            v-for="(item, index) in seller.supports"
+                            :key="index">
+                            <span class="icon" :class="classMap[item.type]"></span>
+                            <span class="text">{{item.description}}</span>
+                        </li>
+                    </ul>
+                    <div class="title">
+                        <div class="line"></div>
+                        <div class="text">商家公告</div>
+                        <div class="line"></div>
+                    </div>
+                    <div class="bulletin">
+                        <p class="content">{{seller.bulletin}}</p>
+                    </div>
+
                 </div>
             </div>
-            <div class="detail-close">
-                <i class="iconfont icon-close2"></i>
+            <div class="detail-close" @click="hidDetail">
+                <i class="iconfont icon-close2" ></i>
             </div>
         </div>
     </div>
@@ -70,13 +94,16 @@
             },
             showDetail(){
                 this.detailShow = true;
+            },
+            hidDetail(){
+                this.detailShow = false;
             }
         },
         async mounted() {
             await this.getData();
         },
         created() {
-            this.classMap = ['decrease', 'discount','guarantee','invoice','special'];
+            this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
         },
         components:{
             star
@@ -161,6 +188,8 @@
                 background-color rgba(0, 0, 0, 0.2)
                 text-align center
                 .count
+                    display inline-block
+                    vertical-align top
                     font-size 10px
                 .icon-right
                     font-size 20px
@@ -212,6 +241,7 @@
             height 100%
             overflow auto
             background-color rgba(7, 17, 27, 0.8);
+            backdrop-filter blur(10px)
             .detail-wrapper
                 width 100%
                 min-height 100%
@@ -223,6 +253,64 @@
                         text-align center
                         font-size 16px
                         font-weight 700
+                    .star-wrapper
+                        margin-top 18px
+                        padding 2px 0
+                        text-align center
+                    .title
+                        display flex
+                        width 80%
+                        margin 28px auto 24px auto
+                        .line
+                            flex 1
+                            position relative
+                            top -6px
+                            border-bottom 1px solid rgba(255, 255, 255, 0.2)
+                        .text
+                            padding 0 12px
+                            font-size 14px
+                            font-weight 700
+
+                    .supports
+                        width 80%
+                        margin 0 auto
+                        .support-item
+                            padding 0 12px
+                            margin-bottom 12px
+                            font-size 0
+                            &:last-child
+                                margin-bottom 0
+                            .icon
+                                display inline-block
+                                width 16px
+                                height 16px
+                                vertical-align top
+                                margin-right 6px
+                                background-size 16px 16px
+                                background-repeat no-repeat
+                                &.decrease
+                                    bg-image('decrease_2')
+                                &.discount
+                                    bg-image('discount_2')
+                                &.guarantee
+                                    bg-image('guarantee_2')
+                                &.invoice
+                                    bg-image('invoice_2')
+                                &.special
+                                    bg-image('special_2')
+
+
+                            .text
+                                line-height 16px
+                                font-size 12px
+                                font-weight 200
+                    .bulletin
+                        width 80%
+                        margin 0 auto
+                        .content
+                            padding 0 12px
+                            line-height 24px
+                            font-size 12px
             .detail-close
                 position relative
                 width 32px

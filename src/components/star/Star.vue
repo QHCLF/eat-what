@@ -41,7 +41,7 @@
                 if (hasDecimal){
                     resule.push(CLS_HALF);
                 }
-                if(resule.length < LENGTH){
+                while(resule.length < LENGTH){
                     resule.push(CLS_OFF);
                 }
 
@@ -88,7 +88,7 @@
                 &.off
                     bg-image('star36_off')
         &.star-24
-            .startItem
+            .starItem
                 width 10px
                 height 10px
                 margin-right 3px
