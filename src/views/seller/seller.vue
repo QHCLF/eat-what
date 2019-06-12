@@ -1,5 +1,5 @@
 <template>
-  <div id="seller">
+  <div id="seller" ref="seller">
     <div class="seller-content">
       <div class="overView">
         <h1 class="title">{{seller.name}}</h1>
@@ -31,6 +31,10 @@
             </div>
           </li>
         </ul>
+        <div class="favorite" @click="toggleFavorite">
+          <i class="iconfont icon-xihuan" :class="{'active' : favorite}"></i>
+          <span class="text">{{favoriteText}}</span>
+        </div>
       </div>
       <split></split>
       <div class="bulletin">
@@ -47,14 +51,35 @@
           </li>
         </ul>
       </div>
+      <split></split>
+      <div class="seller-pic">
+        <h1 class="title">商家实景</h1>
+        <div class="pic-wrapper">
+          <ul class="pic-list">
+            <li class="pic-item" v-for="(pic, index) in seller.pics" :key="index">
+              <img :src="pic" width="120px" height="90px">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <split></split>
+      <div class="info">
+        <h1 class="title">商家信息</h1>
+        <ul>
+          <li class="info-item" v-for="(info, index) in seller.infos"  :key="index">
+            {{info}}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import Star from "../components/star/Star";
-import Split from "../components/split/split";
+import axios from 'axios/index'
+import BScroll from 'better-scroll'
+import Star from "../../components/star/Star";
+import Split from "../../components/split/split";
 
 
 export default {
@@ -62,7 +87,8 @@ export default {
   components: {Split, Star},
   data(){
     return{
-        seller: Object
+        seller: Object,
+        favorite: false
     }
   },
   created(){
@@ -72,17 +98,29 @@ export default {
     async getData(){
       let data = await axios.get('/data/data.json');
       this.seller = data.data.seller;
+    },
+    toggleFavorite(){
+      this.favorite = !this.favorite;
     }
   },
   async mounted() {
     await this.getData();
+    this.$nextTick(()=>{
+      this.scroll = new BScroll(this.$refs.seller, {click:true});
+    })
+  },
+  computed:{
+    favoriteText(){
+      return this.favorite ? '已收藏' : '收藏'
+    }
   }
 
 }
 </script>
 
 <style lang="stylus" scoped>
-  @import "../assets/stylus/mixin.styl";
+  @import "../../assets/stylus/mixin.styl";
+  @import "//at.alicdn.com/t/font_1227783_dino8v8qani.css"
   #seller
     position absolute
     top 174px
@@ -92,6 +130,7 @@ export default {
     overflow hidden
     .overView
       padding 18px
+      position relative
       .title
         margin-bottom 8px
         line-height 14px
@@ -136,6 +175,24 @@ export default {
             .stress
               font-size 24px
 
+      .favorite
+        position absolute
+        top 18px
+        right 11px
+        text-align center
+        width 50px
+        .icon-xihuan
+          display block
+          margin-bottom 4px
+          line-height 24px
+          font-size 24px
+          color #d4d6d9
+          &.active
+            color rgb(240, 20, 20)
+        .text
+          line-height 10px
+          font-size 10px
+          color rgb(77, 85, 93)
     .bulletin
       padding 18px 18px 0 18px
       .title
@@ -158,4 +215,77 @@ export default {
           padding 16px 12px
           font-size 0
           border-1px(rgba(7, 17, 27, 0.1))
+          &:last-child
+            border-none()
+          .icon
+            display inline-block
+            width 16px
+            height 16px
+            vertical-align top
+            margin-right 6px
+            background-size 16px 16px
+            background-repeat no-repeat
+            &.decrease
+              bg-image('decrease_4')
+            &.discount
+              bg-image('discount_4')
+            &.guarantee
+              bg-image('guarantee_4')
+            &.invoice
+              bg-image('invoice_4')
+            &.special
+              bg-image('special_4')
+          .text
+            line-height 16px
+            font-size 12px
+            color rgb(7, 17, 27)
+            font-weight 200
+
+
+
+    .seller-pic
+      padding 18px
+      .title
+        margin-bottom 12px
+        line-height 14px
+        font-size 14px
+        color rgb(7, 17, 27)
+      .pic-wrapper
+        width 100%
+        overflow hidden
+        white-space nowrap
+        .pic-list
+          font-size 0
+          list-style none
+          .pic-item
+            display inline-block
+            margin-right 6px
+            &:last-child
+              margin-right 0
+
+
+
+
+
+    .info
+      padding 18px 18px 0 18px
+      .title
+        padding-bottom 12px
+        line-height 14px
+        font-size 14px
+        color rgb(7, 17, 27)
+        border-1px(rgba(7, 17, 27, 0.1))
+
+      ul
+        list-style none
+        .info-item
+          padding 16px 12px
+          font-size 12px
+          line-height 16px
+          border-1px(rgba(7, 17, 27, 0.1))
+          color rgb(7, 17, 27)
+          font-weight 200
+          &:last-child
+            border-none()
+
 </style>

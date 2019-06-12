@@ -70,10 +70,10 @@
 <script>
   import axios from 'axios/index';
   import BScroll from 'better-scroll'
-  import Star from "../components/star/Star";
-  import Split from "../components/split/split";
-  import RatingSelect from "../components/ratingSelect/ratingSelect";
-  import {formateDate} from "../models/date";
+  import Star from "../../components/star/Star";
+  import Split from "../../components/split/split";
+  import RatingSelect from "../../components/ratingSelect/ratingSelect";
+  import {formateDate} from "../../models/date";
   const ALL = 2;
   export default {
     name: "ratings",
@@ -136,7 +136,7 @@
 
 <style lang="stylus" scoped>
   @import '//at.alicdn.com/t/font_1227783_k2ku01qimla.css';
-  @import "../assets/stylus/mixin.styl";
+  @import "../../assets/stylus/mixin.styl";
   #ratings
     position absolute
     top 174px

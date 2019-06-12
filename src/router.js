@@ -15,11 +15,11 @@ export default new Router({
     {
       path: '/ratings',
       name: 'ratings',
-      component: () => import('./views/ratings.vue')
+      component: () => import('./views/ratings/ratings.vue')
     },{
-      path: '/sheller',
+      path: '/seller',
       name: 'seller',
-      component: () => import('./views/seller.vue')
+      component: () => import('./views/seller/seller.vue')
     }
   ]
 })
